@@ -1,16 +1,16 @@
 // ==UserScript==
 // @date			27.12.2018
 // @name			CustomMediaPlayerVK
-// @namespace		https://github.com/KJ86/VKDownloadMedia
+// @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
 // @version			0.1
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
 
 // @icon
-// @homepage		https://greasyfork.org/ru/scripts/7385-vkdownloadmedia
-// @downloadURL		https://greasyfork.org/scripts/7385-vkdownloadmedia/code/VKDownloadMedia.user.js
-// @supportURL		https://vk.com/vkdownloadmedia
+// @homepage		https://greasyfork.org/ru/scripts/376022-custommediaplayervk
+// @downloadURL		https://greasyfork.org/scripts/376022-custommediaplayervk/code/CustomMediaPlayerVK.user.js
+// @supportURL		
 
 // @grant			none
 // @require			http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
