@@ -1,3 +1,3 @@
 # CustomTopMediaPlayerVK
-[![1.jpg](адрес до картинки)]
-[![2.jpg](адрес до картинки)]
+[![1.jpg](https://github.com/UTINKA/CustomMediaPlayerVK/blob/master/screenshots/1.jpg)]
+[![2.jpg](https://github.com/UTINKA/CustomMediaPlayerVK/blob/master/screenshots/2.jpg)]
