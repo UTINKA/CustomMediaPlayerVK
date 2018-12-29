@@ -89,12 +89,6 @@
 		/*box-shadow: 0 0 10px 0 #000;*/\
 		transition: 0.5s;\
 	}\
-	.top_audio_player_download_state text{\
-		display: block;\
-		position: absolute;\
-		left: calc(100% - 31px);\
-		bottom: 4px;\
-	}\
 	</style>';
 	
 	window.addEventListener('load',function()
@@ -145,7 +139,6 @@
 				</div>\
 			</div>\
 			<div class="top_audio_player_download_state">\
-				<text>0%</text>\
 			</div>\
 			<link rel="stylesheet" href="https://utinka.github.io/materialdesignlib.github.io/css/icons.css" type="text/css"/>' + CMP_CSS);
 
@@ -195,7 +188,6 @@
 				setTimeout(function()
 				{
 					$('.top_audio_player_download_state').css('width', '0%');
-					$('.top_audio_player_download_state text').text('0%');
 				}, 500);
 			}, 1000);
 		}
@@ -217,7 +209,6 @@
 		{
 			CMP[2] = e.loaded * 100 / e.total;
 			$('.top_audio_player_download_state').css('width', Math.round(CMP[2], 2) + '%');
-			$('.top_audio_player_download_state text').text(Math.round(CMP[2], 2) + '%');
 			//console.log( name, Math.round(CMP[2], 2) + "%" );
 		};
 		xhr.send();
