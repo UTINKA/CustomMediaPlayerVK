@@ -162,36 +162,37 @@
 	function CMPUpdate()
 	{
 		CMP[1] = getAudioPlayer()._currentAudio;
-		
-		main_box.find('.top_audio_player.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
-		main_box.find('.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
-		main_box.find('.top_audio_player_cmp_author').html(CMP[1][4]); // author
-		main_box.find('.top_audio_player_cmp_name').html(CMP[1][3]); // music name
-		//
-		main_box.find('.top_audio_player_img').find('div a')[0].href = getAudioPlayer()._impl._currentAudioEl.src;
-		//
-		if(CMP[1][14].split(',')[1] != undefined)
+		if(CMP[1] != false)
 		{
-			main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[1][14].split(',')[1] + ')');
-		}
-		else if(CMP[1][14].split(',')[1] == undefined)
-		{
-			main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
-		}
-		//
-		if(Math.round(CMP[2], 2) == 100)
-		{
-			CMP[2] = 0;
-			setTimeout(function()
+			main_box.find('.top_audio_player.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
+			main_box.find('.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
+			main_box.find('.top_audio_player_cmp_author').html(CMP[1][4]); // author
+			main_box.find('.top_audio_player_cmp_name').html(CMP[1][3]); // music name
+			//
+			main_box.find('.top_audio_player_img').find('div a')[0].href = getAudioPlayer()._impl._currentAudioEl.src;
+			//
+			if(CMP[1][14].split(',')[1] != undefined)
 			{
-				$('.top_audio_player_download_state').css('opacity', '0');
+				main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[1][14].split(',')[1] + ')');
+			}
+			else if(CMP[1][14].split(',')[1] == undefined)
+			{
+				main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+			}
+			//
+			if(Math.round(CMP[2], 2) == 100)
+			{
+				CMP[2] = 0;
 				setTimeout(function()
 				{
-					$('.top_audio_player_download_state').css('width', '0%');
-				}, 500);
-			}, 1000);
+					$('.top_audio_player_download_state').css('opacity', '0');
+					setTimeout(function()
+					{
+						$('.top_audio_player_download_state').css('width', '0%');
+					}, 500);
+				}, 1000);
+			}
 		}
-		
 		CMP[0] = setTimeout(CMPUpdate, 500);
 	}
 	
