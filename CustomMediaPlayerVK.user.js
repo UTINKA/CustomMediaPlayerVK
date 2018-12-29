@@ -2,7 +2,7 @@
 // @date			27.12.2018
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			0.1
+// @version			0.2
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -77,6 +77,24 @@
 		cursor: pointer;\
 		transition: 0.5s;\
 	}\
+	.top_audio_player_download_state{\
+		opacity: 1;\
+		display: block;\
+		position: absolute;\
+		left: 0;\
+		bottom: 0;\
+		height: 4px;\
+		width: 0%;\
+		background: #FFFFFF;\
+		/*box-shadow: 0 0 10px 0 #000;*/\
+		transition: 0.5s;\
+	}\
+	.top_audio_player_download_state text{\
+		display: block;\
+		position: absolute;\
+		left: calc(100% - 31px);\
+		bottom: 4px;\
+	}\
 	</style>';
 	
 	window.addEventListener('load',function()
@@ -126,6 +144,9 @@
 					</a>\
 				</div>\
 			</div>\
+			<div class="top_audio_player_download_state">\
+				<text>0%</text>\
+			</div>\
 			<link rel="stylesheet" href="https://utinka.github.io/materialdesignlib.github.io/css/icons.css" type="text/css"/>' + CMP_CSS);
 
 			main_box.find('.top_audio_player_img').find('div a').click(function(e)
@@ -143,6 +164,8 @@
 		}
 	});
 	
+	CMP[2] = 0;
+	
 	function CMPUpdate()
 	{
 		CMP[1] = getAudioPlayer()._currentAudio;
@@ -156,12 +179,25 @@
 		//
 		if(CMP[1][14].split(',')[1] != undefined)
 		{
-			main_box.find('.top_audio_player_img')[0].src = CMP[1][14].split(',')[1];
 			main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[1][14].split(',')[1] + ')');
 		}
 		else if(CMP[1][14].split(',')[1] == undefined)
 		{
 			main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+		}
+		//
+		if(Math.round(CMP[2], 2) == 100)
+		{
+			CMP[2] = 0;
+			setTimeout(function()
+			{
+				$('.top_audio_player_download_state').css('opacity', '0');
+				setTimeout(function()
+				{
+					$('.top_audio_player_download_state').css('width', '0%');
+					$('.top_audio_player_download_state text').text('0%');
+				}, 500);
+			}, 1000);
 		}
 		
 		CMP[0] = setTimeout(CMPUpdate, 500);
@@ -169,6 +205,7 @@
 	
 	function download_file(url, name, type, callback) 
 	{
+		$('.top_audio_player_download_state').css('opacity', '1');
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", url, true);
 		xhr.responseType = "blob";
@@ -176,11 +213,13 @@
 		{
 			download(xhr.response, name + ".mp3", type);
 		};
-		/*xhr.onprogress = function (e) {
-			var progress = e.loaded * 100 / e.total;
-			console.log( name, Math.round(progress, 2) + "%" );
-		};*/
+		xhr.onprogress = function (e) 
+		{
+			CMP[2] = e.loaded * 100 / e.total;
+			$('.top_audio_player_download_state').css('width', Math.round(CMP[2], 2) + '%');
+			$('.top_audio_player_download_state text').text(Math.round(CMP[2], 2) + '%');
+			//console.log( name, Math.round(CMP[2], 2) + "%" );
+		};
 		xhr.send();
 	}
-	
 })();
