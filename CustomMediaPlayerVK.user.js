@@ -15,6 +15,7 @@
 // @grant			none
 // @require			http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
 // @require			https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.7/download.min.js
+
 // @run-at			document-end
 // ==/UserScript==
 
@@ -23,8 +24,13 @@
 	var CMP = [];
 	var main_box = $('#top_audio_player');
 	
+
 	// css
-	var CMP_CSS = '<style>\
+	var CMP_CSS = '\
+	<style>\
+	\
+	@import url(https://fonts.googleapis.com/css?family=Material+Icons);\
+	\
 	.top_audio_player_img{\
 		display: block;\
 		width: 42px;\
@@ -40,7 +46,7 @@
 		width: 100%;\
 		height: 100%;\
 		background: rgba(0, 0, 0, 0.3);\
-		transition: 0.5s;\
+		transition: 0.6s;\
 	}\
 	.top_audio_player_img:hover div{\
 		opacity: 1;\
@@ -54,6 +60,7 @@
 		color: #fff;\
 	}\
 	.top_audio_player_cmp_author{\
+		opacity: 0;\
 		position: absolute;\
 		top: 61px;\
 		left: 0;\
@@ -63,9 +70,10 @@
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
-		transition: 0.5s;\
+		transition: 0.1s;\
 	}\
 	.top_audio_player_cmp_name{\
+		opacity: 0;\
 		position: absolute;\
 		top: 47px;\
 		left: 0;\
@@ -75,7 +83,7 @@
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
-		transition: 0.5s;\
+		transition: 0.1s;\
 	}\
 	.top_audio_player_download_state{\
 		opacity: 1;\
@@ -87,6 +95,7 @@
 		width: 0%;\
 		background: #FFFFFF;\
 		/*box-shadow: 0 0 10px 0 #000;*/\
+		border-bottom: solid .12px #4a76a8;\
 		transition: 0.5s;\
 	}\
 	</style>';
@@ -140,16 +149,12 @@
 			</div>\
 			<div class="top_audio_player_download_state">\
 			</div>\
-			<link rel="stylesheet" href="https://utinka.github.io/materialdesignlib.github.io/css/icons.css" type="text/css"/>' + CMP_CSS);
+			' + CMP_CSS);
 
 			main_box.find('.top_audio_player_img').find('div a').click(function(e)
 			{
-				e.stopPropagation();
 				e.preventDefault();
-				
-				download_file(main_box.find('.top_audio_player_img').find('div a')[0].href, CMP[1][4] + ' - ' +CMP[1][3], "audio/mp3", window.download_audio);
-				
-				$('.top_audio_player.top_audio_player_enabled').click();
+				download_file(main_box.find('.top_audio_player_img').find('div a')[0].href, CMP[0][4] + ' - ' + CMP[0][3], "audio/mp3", window.download_audio);
 			});
 
 			// Start updater
@@ -157,32 +162,43 @@
 		}
 	});
 	
-	CMP[2] = 0;
+	CMP[1] = 0;
+	CMP[2] = '';
 	
 	function CMPUpdate()
 	{
-		CMP[1] = getAudioPlayer()._currentAudio;
-		if(CMP[1] != false)
+		CMP[0] = getAudioPlayer()._currentAudio;
+		if(CMP[0] != false)
 		{
-			main_box.find('.top_audio_player.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
-			main_box.find('.top_audio_player_title').css('color','rgba(0, 0, 0, 0)');
-			main_box.find('.top_audio_player_cmp_author').html(CMP[1][4]); // author
-			main_box.find('.top_audio_player_cmp_name').html(CMP[1][3]); // music name
-			//
 			main_box.find('.top_audio_player_img').find('div a')[0].href = getAudioPlayer()._impl._currentAudioEl.src;
 			//
-			if(CMP[1][14].split(',')[1] != undefined)
+			var check_track = CMP[0][4] + '_' + CMP[0][3];
+			if(CMP[2] == '' || CMP[2] != check_track)
 			{
-				main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[1][14].split(',')[1] + ')');
-			}
-			else if(CMP[1][14].split(',')[1] == undefined)
-			{
-				main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+				main_box.find('.top_audio_player_cmp_author').css('opacity', '0');
+				main_box.find('.top_audio_player_cmp_name').css('opacity', '0');
+				//
+				if(CMP[0][14].split(',')[1] != undefined)
+				{
+					main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[0][14].split(',')[1] + ')');
+				}
+				else main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+				CMP[2] = check_track;
+				//
+				clearTimeout(CMP[3]);
+				CMP[3] = setTimeout(function()
+				{
+					main_box.find('.top_audio_player_cmp_author').html(CMP[0][4]); // author
+					main_box.find('.top_audio_player_cmp_name').html(CMP[0][3]); // music name
+					//
+					main_box.find('.top_audio_player_cmp_author').css('opacity', '1');
+					main_box.find('.top_audio_player_cmp_name').css('opacity', '1');
+				}, 100);
 			}
 			//
-			if(Math.round(CMP[2], 2) == 100)
+			if(Math.round(CMP[1], 2) == 100)
 			{
-				CMP[2] = 0;
+				CMP[1] = 0;
 				setTimeout(function()
 				{
 					$('.top_audio_player_download_state').css('opacity', '0');
@@ -193,7 +209,7 @@
 				}, 1000);
 			}
 		}
-		CMP[0] = setTimeout(CMPUpdate, 500);
+		setTimeout(CMPUpdate, 200);
 	}
 	
 	function download_file(url, name, type, callback) 
@@ -202,15 +218,14 @@
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", url, true);
 		xhr.responseType = "blob";
-		xhr.onload = function () 
+		xhr.onload = function() 
 		{
 			download(xhr.response, name + ".mp3", type);
 		};
-		xhr.onprogress = function (e) 
+		xhr.onprogress = function(e) 
 		{
-			CMP[2] = e.loaded * 100 / e.total;
-			$('.top_audio_player_download_state').css('width', Math.round(CMP[2], 2) + '%');
-			//console.log( name, Math.round(CMP[2], 2) + "%" );
+			CMP[1] = e.loaded * 100 / e.total;
+			$('.top_audio_player_download_state').css('width', Math.round(CMP[1], 2) + '%');
 		};
 		xhr.send();
 	}
