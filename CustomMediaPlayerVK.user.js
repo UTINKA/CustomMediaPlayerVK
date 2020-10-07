@@ -2,7 +2,7 @@
 // @date			23.04.2019
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			0.6
+// @version			0.7
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -236,6 +236,11 @@
 	<style>\
 	\
 	@import url(https://fonts.googleapis.com/css?family=Material+Icons);\
+	\
+	.top_audio_player.top_audio_player_enabled{\
+		position: relative;\
+		width: 100%;\
+	}\
 	\
 	.top_audio_player_img{\
 		display: block;\
