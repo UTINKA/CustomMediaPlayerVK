@@ -2,7 +2,7 @@
 // @date			23.04.2019
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			0.7
+// @version			0.8
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -161,27 +161,35 @@
 	{
 		if(state == false)
 		{
+			main_box.css({
+				'width': 'unset',
+				'padding': '0 20px 0 8px'
+			});
+			//
 			main_box.find('.top_audio_player_img').css('display','none');
 			// prev
 			main_box.find('.top_audio_player_prev').css({
 				'position': 'relative',
 				'top': 'unset',
 				'bottom': 'unset',
-				'left': 'unset'
+				'left': 'unset',
+				'margin': '12px 2px'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
 				'position': 'relative',
 				'top': 'unset',
 				'bottom': 'unset',
-				'left': 'unset'
+				'left': 'unset',
+				'margin': '12px 2px'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
 				'position': 'relative',
 				'top': 'unset',
 				'bottom': 'unset',
-				'left': 'unset'
+				'left': 'unset',
+				'margin': '12px 2px'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
@@ -193,41 +201,51 @@
 				'margin': '14px 0 0'
 			});
 			main_box.find('.top_audio_player_title').css('display','inline-block');
+			main_box.find('.top_audio_player_cmp_author').css('display','none');
+			main_box.find('.top_audio_player_cmp_name').css('display','none');
 		}
 		else
 		{
+			main_box.css({
+				'width':'100%',
+				'padding':'0'
+			});
+			//
 			main_box.find('.top_audio_player_img').css('display','block');
 			// prev
 			main_box.find('.top_audio_player_prev').css({
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': '42px'
+				'left': '60px'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': '77px'
+				'left': 'calc(60px + (60px / 2))'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': '107px'
+				'left': 'calc(60px + 60px)'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
 				'position': 'absolute',
-				'top': '-40px',
-				'left': '137px',
-				'right': '0px',
-				'bottom': '0px',
-				'margin': '0px'
+				'left': 'calc(24px*3 + 48px + 10px*3)',
+				'top': '0',
+				'right': '0',
+				'bottom': '0',
+				'height': '100%',
+				'margin': '0'
 			});
 			main_box.find('.top_audio_player_title').css('display','none');
+			main_box.find('.top_audio_player_cmp_author').css('display','unset');
+			main_box.find('.top_audio_player_cmp_name').css('display','unset');
 		}
 	}
 
@@ -244,9 +262,9 @@
 	\
 	.top_audio_player_img{\
 		display: block;\
-		width: 42px;\
-		height: 42px;\
-		background-color: #3d6898;\
+		width: 48px;\
+		height: 48px;\
+		background-color: rgba(0,0,0,0);\
 		background-image: url(/images/audio_row_placeholder.png);\
 		background-repeat: no-repeat;\
 		background-size: cover;\
@@ -255,27 +273,29 @@
 	.top_audio_player_cmp_author{\
 		opacity: 0;\
 		position: absolute;\
-		top: 61px;\
-		left: 0;\
+		top: calc(48px / 2 + 2px);\
+		left: 5px;\
 		right: 0;\
 		bottom: 0;\
 		overflow: hidden;\
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
+		color: var(--steel_gray_400);\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_cmp_name{\
 		opacity: 0;\
 		position: absolute;\
-		top: 47px;\
-		left: 0;\
+		top: calc(48px / 2 - 15px);\
+		left: 5px;\
 		right: 0;\
 		bottom: 0;\
 		overflow: hidden;\
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
+		color: var(--steel_gray_400);\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_download_state{\
