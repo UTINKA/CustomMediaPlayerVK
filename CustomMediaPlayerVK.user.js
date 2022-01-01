@@ -1,8 +1,8 @@
 // ==UserScript==
-// @date			17.07.2021
+// @date			01.01.2022
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			1.0
+// @version			1.1
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -22,7 +22,9 @@
 {
 	var 
 		CMP = [],
-		SettingsAdd = false
+		SettingsAdd = false,
+		AnimTimerState = false,
+		AnimTimer = undefined
 	;
 	var main_box = $('#top_audio_player');
 	
@@ -35,7 +37,12 @@
 			m.forEach(function(m) 
 			{
 				CMPUpdate();
-				CMPVKsetState(true);				
+				CMPVKsetState(true);
+				if(AnimTimerState == false)
+				{
+					AnimTimerState = true;
+					Animates();
+				}					
 				/*
 				var sbox = $('.settings_panel');
 				if(location.href.search(/settings/) > 1 && location.href.search(/act/) == -1)
@@ -127,21 +134,24 @@
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': '60px'
+				'left': '60px',
+				'filter': 'grayscale(1) brightness(1000%)'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': 'calc(60px + (60px / 2))'
+				'left': 'calc(60px + (60px / 2))',
+				'filter': 'grayscale(1) brightness(1000%)'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
 				'position': 'absolute',
 				'top': '0px',
 				'bottom': '0px',
-				'left': 'calc(60px + 60px)'
+				'left': 'calc(60px + 60px)',
+				'filter': 'grayscale(1) brightness(1000%)'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
@@ -180,6 +190,27 @@
 		background-size: cover;\
 		transition: 0.5s;\
 	}\
+	.top_audio_player_img_bg_cover{\
+		display: block;\
+		width: 100%;\
+		height: 100%;\
+		z-index: -1;\
+		position: absolute;\
+		background: rgb(0 0 0 / 10%);\
+	}\
+	.top_audio_player_img_bg{\
+		background-image: url(/images/audio_row_placeholder.png);\
+		background-size: cover;\
+		background-position-x: 0px;\
+		background-position-y: 0px;\
+		display: block;\
+		position: absolute;\
+		width: 400px;\
+		height: 160px;\
+		z-index: -2;\
+		filter: blur(15px);\
+		transition: 3s;\
+	}\
 	.top_audio_player_cmp_author{\
 		opacity: 0;\
 		position: absolute;\
@@ -191,7 +222,8 @@
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
-		color: var(--steel_gray_400);\
+		color: rgb(255 255 255);\
+		font-weight: bold;\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_cmp_name{\
@@ -205,7 +237,8 @@
 		white-space: nowrap;\
 		text-overflow: ellipsis;\
 		cursor: pointer;\
-		color: var(--steel_gray_400);\
+		color: rgb(255 255 255);\
+		font-weight: bold;\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_download_state{\
@@ -254,6 +287,8 @@
 		<div class="top_audio_player_img">\
 			<!--a class="top_audio_player_download"><i class="material-icons">play_for_work</i></a-->\
 		</div>\
+		<div class="top_audio_player_img_bg_cover"></div>\
+		<div class="top_audio_player_img_bg"></div>\
 			<div class="top_audio_player_download_state">\
 		</div>\
 		' + CMP_CSS);
@@ -280,6 +315,35 @@
 	CMP[1] = 0;
 	CMP[2] = '';
 	
+	function Animates()
+	{
+		clearTimeout(AnimTimer);
+		var X = RandXY(30, 20, 0, 100)[0];
+		var Y = RandXY(20, 30, 0, 150)[1];
+
+		CMP[0] = getAudioPlayer()._currentAudio;
+		if(CMP[0] != false)
+		{
+			main_box.find('.top_audio_player_img_bg').css('background-position-x', X + 'px');
+			main_box.find('.top_audio_player_img_bg').css('background-position-y', Y + 'px');
+		}
+		AnimTimer = setTimeout(function()
+		{
+			Animates();
+		}, 2000);
+	}
+	
+	function RandXY(X, Y, Min, Max) 
+	{
+		var result = [0,0];
+		var X = Math.floor(Math.random() * ((X - Max) - Min) ) + Min;
+		var Y = Math.floor(Math.random() * ((Y - Max) - Min) ) + Min;
+		if(X != Y) result = [X,Y];
+		else result = [0,0];
+		return result;
+	}
+	
+	
 	function CMPUpdate()
 	{
 		CMP[0] = getAudioPlayer()._currentAudio;
@@ -300,8 +364,13 @@
 				if(CMP[0][14].split(',')[1] != undefined)
 				{
 					main_box.find('.top_audio_player_img').css('background-image', 'url(' + CMP[0][14].split(',')[1] + ')');
+					main_box.find('.top_audio_player_img_bg').css('background-image', 'url(' + CMP[0][14].split(',')[1] + ')');
 				}
-				else main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+				else 
+				{
+					main_box.find('.top_audio_player_img').css('background-image', 'url(/images/audio_row_placeholder.png)');
+					main_box.find('.top_audio_player_img_bg').css('background-image', 'url(/images/audio_row_placeholder.png)');
+				}
 				CMP[2] = check_track;
 				//
 				clearTimeout(CMP[3]);
