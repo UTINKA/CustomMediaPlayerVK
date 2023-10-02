@@ -165,7 +165,8 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '0'
+				'margin': '0',
+				'filter': 'grayscale(0) brightness(100%)'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
@@ -173,7 +174,8 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '0'
+				'margin': '0',
+				'filter': 'grayscale(0) brightness(100%)'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
@@ -181,7 +183,8 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '0'
+				'margin': '0',
+				'filter': 'grayscale(0) brightness(100%)'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
