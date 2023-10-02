@@ -2,7 +2,7 @@
 // @date			3.10.2023
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			1.3
+// @version			1.4
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
