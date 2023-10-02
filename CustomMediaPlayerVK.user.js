@@ -2,7 +2,7 @@
 // @date			01.01.2022
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			1.1
+// @version			1.2
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -24,7 +24,8 @@
 		CMP = [],
 		SettingsAdd = false,
 		AnimTimerState = false,
-		AnimTimer = undefined
+		AnimTimer = undefined,
+		CMPlayerVK = '0,0'
 	;
 	var main_box = $('#top_audio_player');
 	
@@ -37,29 +38,103 @@
 			m.forEach(function(m) 
 			{
 				CMPUpdate();
-				CMPVKsetState(true);
+				if(getMem('CMPlayerVK') == false)
+				{
+					setMem('CMPlayerVK','0,0');
+					CMPlayerVK = CMPlayerVK.split(',');
+				}
+				else
+				{
+					CMPlayerVK = getMem('CMPlayerVK').split(',');
+					if(CMPlayerVK[0] == 1)
+					{
+						CMPVKsetState(true);
+					}
+					else CMPVKsetState(false);
+					//
+					if(CMPlayerVK[1] == 1)
+					{
+						$('.top_audio_player').css('top','-50px');
+					}
+					else $('.top_audio_player').css('top','0');
+				}
 				if(AnimTimerState == false)
 				{
 					AnimTimerState = true;
 					Animates();
 				}					
-				/*
 				var sbox = $('.settings_panel');
 				if(location.href.search(/settings/) > 1 && location.href.search(/act/) == -1)
 				{
-					var WaitTimer = setTimeout(function()
+					if(SettingsAdd == false)
 					{
-						if(SettingsAdd == false)
+						SettingsAdd = true;
+						//
+						var 
+							Used, 
+							Hided
+						;
+						if(CMPlayerVK[0] == 0) Used = '<input class="blind_label" type="checkbox" id="settings_cmpvk_state">';
+						else if(CMPlayerVK[0] == 1) Used = '<input checked class="blind_label" type="checkbox" id="settings_cmpvk_state">';
+					
+						if(CMPlayerVK[1] == 0) Hided = '<input class="blind_label" type="checkbox" id="settings_cmpvk_player">';
+						else if(CMPlayerVK[1] == 1) Hided = '<input checked class="blind_label" type="checkbox" id="settings_cmpvk_player">';
+						//
+						sbox.prepend('\
+						<div class="settings_line">\
+							<div class="settings_info_block">\
+								<div class="settings_label">Custom Media Player</br>Настройки</div>\
+								<div class="settings_labeled_text">\
+									<!--div class="settings_menu_link"></div-->\
+									<div class="settings_narrow_row">\
+										' + Used + '\
+										<label for="settings_cmpvk_state">Использовать плеер</label>\
+									</div>\
+									<div class="settings_narrow_row">\
+										' + Hided + '\
+										<label for="settings_cmpvk_player">Скрыть плеер</label>\
+									</div>\
+								</div>\
+							</div>\
+						</div>\
+						');
+						$('#settings_cmpvk_state').change(function(e)
 						{
-							SettingsAdd = true;
-						}
-						clearTimeout(WaitTimer);
-					}, 1000);
+							var state = $(this).prop("checked");
+							if(state == true)
+							{
+								CMPlayerVK[0] = 1;
+								CMPVKsetState(true);
+							}
+							else 
+							{
+
+								CMPlayerVK[0] = 0;
+								CMPVKsetState(false);
+							}
+							UpdateSettings();
+						});
+						$('#settings_cmpvk_player').change(function(e)
+						{
+							var state = $(this).prop("checked");
+							if(state == true)
+							{
+								CMPlayerVK[1] = 1;
+								$('.top_audio_player').css('top','-50px');
+							}
+							else 
+							{
+								CMPlayerVK[1] = 0;
+								$('.top_audio_player').css('top','0');
+							}
+							UpdateSettings();
+						});
+					}
 				}
 				else
 				{
 					SettingsAdd = false;		
-				}*/
+				}
 			});
 		});
 		
@@ -90,7 +165,7 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '12px 2px'
+				'margin': '0'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
@@ -98,7 +173,7 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '12px 2px'
+				'margin': '0'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
@@ -106,7 +181,7 @@
 				'top': 'unset',
 				'bottom': 'unset',
 				'left': 'unset',
-				'margin': '12px 2px'
+				'margin': '0'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
@@ -115,11 +190,14 @@
 				'left': 'unset',
 				'right': 'unset',
 				'bottom': 'unset',
-				'margin': '14px 0 0'
+				'height': '24px',
+				'margin': '0'
 			});
 			main_box.find('.top_audio_player_title').css('display','inline-block');
 			main_box.find('.top_audio_player_cmp_author').css('display','none');
 			main_box.find('.top_audio_player_cmp_name').css('display','none');
+			main_box.find('.top_audio_player_img_bg_cover').css('opacity', '0');
+			main_box.find('.top_audio_player_img_bg').css('display','none').css('opacity', '0');
 		}
 		else
 		{
@@ -166,6 +244,8 @@
 			main_box.find('.top_audio_player_title').css('display','none');
 			main_box.find('.top_audio_player_cmp_author').css('display','unset');
 			main_box.find('.top_audio_player_cmp_name').css('display','unset');
+			main_box.find('.top_audio_player_img_bg_cover').css('opacity', '1');
+			main_box.find('.top_audio_player_img_bg').css('display','block').css('opacity', '1');
 		}
 	}
 
@@ -292,23 +372,7 @@
 			<div class="top_audio_player_download_state">\
 		</div>\
 		' + CMP_CSS);
-			
-		// Bind
-		/*main_box.find('.top_audio_player_download').click(function(e)
-		{
-			var aid = getAudioID();
-			var aURL = '';
-			var obj = $(this);
-			var aName = obj.attr('aName');
-			
-			get_data(aid).then(result => 
-			{
-				aURL = result.url;
-				console.log(aURL);
-				download_file(aURL, aName, "audio/mp3", window.download_audio);
-			});
-		});*/
-		// Start updater
+		//
 		Start();
 	});
 	
@@ -331,6 +395,22 @@
 		{
 			Animates();
 		}, 2000);
+	}
+	
+	function getMem(key)
+	{
+		var memory = localStorage.getItem(key);
+		if(memory != null && memory != undefined && memory != 'null' && memory.length != 0) return memory;
+		else return false;
+	}
+	function setMem(key, value)
+	{
+		return localStorage.setItem(key, value);
+	}
+	function UpdateSettings()
+	{
+		var settings = CMPlayerVK[0] + ',' + CMPlayerVK[1];
+		setMem('CMPlayerVK', settings);
 	}
 	
 	function RandXY(X, Y, Min, Max) 
@@ -405,125 +485,6 @@
 					}, 100);
 				}, 100);
 			}
-			//
-			/*if(Math.round(CMP[1], 2) == 100)
-			{
-				CMP[1] = 0;
-				setTimeout(function()
-				{
-					$('.top_audio_player_download_state').css('opacity', '0');
-					setTimeout(function()
-					{
-						$('.top_audio_player_download_state').css('width', '0%');
-					}, 500);
-				}, 1000);
-			}*/
 		}
 	}
-	
-	/*function download_file(url, name, type, callback) 
-	{
-		$('.top_audio_player_download_state').css('opacity', '1');
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", url, true);
-		xhr.responseType = "blob";
-		xhr.onload = function() 
-		{
-			download(xhr.response, name + ".mp3", type);
-		};
-		xhr.onprogress = function(e) 
-		{
-			CMP[1] = e.loaded * 100 / e.total;
-			$('.top_audio_player_download_state').css('width', Math.round(CMP[1], 2) + '%');
-		};
-		xhr.send();
-	}
-	
-	function getAudioID()
-	{
-		var i = AudioUtils.asObject(getAudioPlayer()._currentAudio);
-		return `${i['fullId']}_${i['actionHash']}_${i['urlHash']}`;
-	}
-	
-	function encode_url(t) 
-	{
-        let c = {
-            'v': t=> t.split('').reverse().join(''),
-            'r': (t, e) => {
-                t = t.split('');
-                for (let i, o = _ + _, a = t.length; a--; )
-                    ~(i = o.indexOf(t[a])) && (t[a] = o.substr(i - e, 1));
-                return t.join('')
-            },
-            's': (t,e)=> {
-                let i = t.length;
-                if (i) {
-                    let o = ((t, e)=> {
-                        let i = t.length,o = [];
-                        if (i) {let a = i;
-                        for (e = Math.abs(e); a--; )
-                            e = (i * (a + 1) ^ e + a) % i,o[a] = e
-                        }
-                        return o
-                    })(t, e), a = 0;
-                    for (t = t.split(''); ++a < i; )
-                        t[a] = t.splice(o[i - 1 - a], 1, t[a]) [0];
-                    t = t.join('')}
-                return t
-            },
-            'i': (t, e) => c['s'](t, e ^ vk.id),
-            'x': (t, e,i=[])=> {
-                return e = e.charCodeAt(0),
-                    e(t.split(''), (t, o) =>
-                    {i.push(String.fromCharCode(o.charCodeAt(0) ^ e))}),
-                    i.join('')
-            }
-        },_ = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN0PQRSTUVWXYZO123456789+/=',
-            h=t=>{
-            if (!t || t.length % 4 == 1)
-                return !1;
-            for (var e, i, o = 0, a = 0, s = ''; i = t.charAt(a++); )
-                ~(i = _.indexOf(i)) &&
-                (e = o % 4 ? 64 * e + i : i, o++ % 4) &&
-                (s += String.fromCharCode(255 & e >> ( - 2 * o & 6)));
-            return s
-        };
-        if ((!window['wbopen'] || !~(window.open + '').indexOf('wbopen')) && ~t.indexOf('audio_api_unavailable')) {
-            let e = t.split('?extra=')[1].split('#'),i=''===e[1]?'':h(e[1]);
-            if (e = h(e[0]), 'string' != typeof i || !e)
-                return t;
-            for (var o, a, s = (i = i ? i.split(String.fromCharCode(9))  : []).length; s--; ) {
-                if (o = (a = i[s].split(String.fromCharCode(11))).splice(0, 1, e) [0], !c[o])
-                    return t; e = c[o].apply(null, a)}if (e && 'http' === e.substr(0, 4)) return e
-        }
-        return t
-	}
-	
-	function _g(url)
-	{
-		if(url.indexOf(".mp3?")!==-1) return url;
-		else return url.replace("/index.m3u8",".mp3").replace(/\/\w{11}\//,'/');
-	}
-
-	function get_data(aid)
-	{
-		return new Promise(onSuccess => 
-		{
-			var data = undefined;
-			ajax.post("/al_audio.php", {'act': 'reload_audio', 'al': '1', 'ids': aid + ""}, 
-			{
-				'onDone': a => 
-				{
-					each(a, (i, c) => 
-					{
-						c = AudioUtils.asObject(c);
-						c['url'] = _g(encode_url(c['url']));
-						data = c;
-					});
-					onSuccess(data);
-				}
-			})
-		})
-	}*/
-	
 })();
