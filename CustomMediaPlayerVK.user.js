@@ -1,5 +1,5 @@
 // ==UserScript==
-// @date			01.01.2022
+// @date			3.10.2023
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
 // @version			1.2
