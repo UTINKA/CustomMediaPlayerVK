@@ -2,7 +2,7 @@
 // @date			3.10.2023
 // @name			CustomMediaPlayerVK
 // @namespace		https://github.com/UTINKA/CustomMediaPlayerVK/
-// @version			1.4
+// @version			1.5
 // @description		Изменённый плеер в верхнем меню для ВК
 // @author			UTINKA
 // @include			https://vk.com/*
@@ -216,7 +216,8 @@
 				'top': '0px',
 				'bottom': '0px',
 				'left': '60px',
-				'filter': 'grayscale(1) brightness(1000%)'
+				'filter': 'grayscale(1) brightness(1000%)',
+				'z-index': '3'
 			});
 			// play/pause
 			main_box.find('.top_audio_player_play').css({
@@ -224,7 +225,8 @@
 				'top': '0px',
 				'bottom': '0px',
 				'left': 'calc(60px + (60px / 2))',
-				'filter': 'grayscale(1) brightness(1000%)'
+				'filter': 'grayscale(1) brightness(1000%)',
+				'z-index': '3'
 			});
 			// next
 			main_box.find('.top_audio_player_next').css({
@@ -232,7 +234,8 @@
 				'top': '0px',
 				'bottom': '0px',
 				'left': 'calc(60px + 60px)',
-				'filter': 'grayscale(1) brightness(1000%)'
+				'filter': 'grayscale(1) brightness(1000%)',
+				'z-index': '3'
 			});
 			//
 			main_box.find('.top_audio_player_title_wrap').css({
@@ -271,13 +274,14 @@
 		background-image: url(/images/audio_row_placeholder.png);\
 		background-repeat: no-repeat;\
 		background-size: cover;\
+		z-index: 2;\
 		transition: 0.5s;\
 	}\
 	.top_audio_player_img_bg_cover{\
 		display: block;\
 		width: 100%;\
 		height: 100%;\
-		z-index: -1;\
+		z-index: 1;\
 		position: absolute;\
 		background: rgb(0 0 0 / 10%);\
 	}\
@@ -290,7 +294,7 @@
 		position: absolute;\
 		width: 400px;\
 		height: 160px;\
-		z-index: -2;\
+		z-index: 0;\
 		filter: blur(15px);\
 		transition: 3s;\
 	}\
@@ -307,6 +311,7 @@
 		cursor: pointer;\
 		color: rgb(255 255 255);\
 		font-weight: bold;\
+		z-index: 2;\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_cmp_name{\
@@ -322,6 +327,7 @@
 		cursor: pointer;\
 		color: rgb(255 255 255);\
 		font-weight: bold;\
+		z-index: 2;\
 		transition: 0.2s;\
 	}\
 	.top_audio_player_download_state{\
