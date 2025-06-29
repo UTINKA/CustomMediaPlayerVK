@@ -63,7 +63,7 @@
 					AnimTimerState = true;
 					Animates();
 				}					
-				var sbox = $('.settings_panel');
+				var sbox = $('form');
 				if(location.href.search(/settings/) > 1 && location.href.search(/act/) == -1)
 				{
 					if(SettingsAdd == false)
@@ -363,6 +363,16 @@
 	}\
 	.top_audio_player_download:hover i{\
 		transform: scale(1);\
+	}\
+	.settings_line{\
+		margin: 0 calc(50%/20);\
+		padding: 15px 0 10px;\
+		border-top: 1px solid var(--vkui--color_separator_primary_alpha);\
+		border-bottom: 0px solid var(--vkui--color_separator_primary_alpha);\
+	}\
+	.settings_labeled_text{\
+		padding-top: 6px;\
+		margin: 0 0 0 189px;\
 	}\
 	</style>';
 	
